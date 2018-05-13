@@ -41,3 +41,15 @@
  ;; If there is more than one, they won't work right.
  )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+					; BACKUP FILES
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+      backup-by-copying t     ;; Don't delink hardlinks
+      version-control t       ;; Use version numbers on backups
+      delete-old-versions t   ;; Automatically delete excess backups
+      kept-new-versions 20    ;; how many of the newest versions to keep
+      kept-old-versions 5     ;; how many of the oldest versions to keep
+      )
+
