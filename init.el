@@ -43,17 +43,26 @@
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-					; BACKUP FILES
-	      	        	; (https://stackoverflow.com/a/2680682)
+					; BACKUP/AUTOSAVE FILES
+					; (https://www.emacswiki.org/emacs/BackupDirectory)
+					; (https://stackoverflow.com/a/2680682)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-      backup-by-copying t     ;; Don't delink hardlinks
-      version-control t       ;; Use version numbers on backups
-      delete-old-versions t   ;; Automatically delete excess backups
-      kept-new-versions 20    ;; how many of the newest versions to keep
-      kept-old-versions 5     ;; how many of the oldest versions to keep
-      )
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+
+(setq auto-save-file-name-transforms
+  `((".*" ,temporary-file-directory t)))
+
+(message "Deleting old backup files...")
+(let ((week (* 60 60 24 7))
+      (current (float-time (current-time))))
+  (dolist (file (directory-files temporary-file-directory t))
+    (when (and (backup-file-name-p file)
+               (> (- current (float-time (fifth (file-attributes file))))
+                  week))
+      (message "%s" file)
+      (delete-file file))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; INITIAL FRAME
