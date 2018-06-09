@@ -65,7 +65,7 @@
       (delete-file file))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-					; INITIAL FRAME
+		           		; INITIAL FRAME
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when window-system (set-frame-parameter nil 'fullscreen 'fullboth))
@@ -90,7 +90,7 @@
 ;; (global-linum-mode t) ;; line numbers
 
 (define-minor-mode git
-  "Toggle Magit mode."
+  "Toggle Git minor mode."
   ;; The initial value
   nil
   ;; The indicator for the mode line.
@@ -98,6 +98,8 @@
   ;; The minor mode bindings
   `((,(kbd "C-c s") . magit-status)))
 
-(add-hook 'magit-mode-hook 'git)
+(add-hook 'magit-mode-hook 'git) ;; add to Magit mode by default
+
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
