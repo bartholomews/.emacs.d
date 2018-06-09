@@ -33,7 +33,7 @@
  '(custom-safe-themes
    (quote
     ("6383f86cac149fb10fc5a2bac6e0f7985d9af413c4be356cab4bfea3c08f3b42" default)))
- '(package-selected-packages (quote (magit clojure-mode flatui-dark-theme)))
+ '(package-selected-packages (quote (web-mode magit clojure-mode flatui-dark-theme)))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -80,6 +80,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; MODES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 (add-hook 'clojurescript-mode-hook 'global-linum-mode)
 ;; (global-linum-mode t) ;; line numbers
