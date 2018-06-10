@@ -91,17 +91,29 @@
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-(define-minor-mode git
-  "Toggle Git minor mode."
-  ;; The initial value
-  nil
-  ;; The indicator for the mode line.
-  " Git"
-  ;; The minor mode bindings
-  `((,(kbd "C-c s") . magit-status)))
-
-(add-hook 'magit-mode-hook 'git) ;; add to Magit mode by default
-
-(global-set-key (kbd "C-x g") 'magit-status)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able to load them.
+;;
+;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
+;; then you can add the following code to this file:
+;;
+;; (require 'yaml-mode)
+;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+;; 
+;; Adding this code will make Emacs enter yaml mode whenever you open a .yml file
+(add-to-list 'load-path "~/.emacs.d/vendor")
+
+;; Add a directory to load path so that when you `load` things below,
+;; Emacs knows where to look for the corresponding file.
+(add-to-list 'load-path "~/.emacs.d/customizations")
+
+(load "modes.el")
+;; (load "shell-integration.el")
+;; (load "editing.el")
+;; (load "elisp-editing.el")
+;; (load "misc.el")
+;; (load "navigation.el")
+;; (load "setup-clojure.el")
+;; (load "setup-js.el")
+;; (load "ui.el")
