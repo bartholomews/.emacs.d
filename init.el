@@ -16,7 +16,7 @@
 (package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-					; THEMES
+					; PACKAGES/THEMES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -33,7 +33,7 @@
  '(custom-safe-themes
    (quote
     ("6383f86cac149fb10fc5a2bac6e0f7985d9af413c4be356cab4bfea3c08f3b42" default)))
- '(package-selected-packages (quote (web-mode magit clojure-mode flatui-dark-theme)))
+ '(package-selected-packages (quote (org web-mode magit clojure-mode flatui-dark-theme)))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -42,6 +42,13 @@
  ;; If there is more than one, they won't work right.
  )
 
+(defun hook-to-modes (function hooks)
+  (mapc (lambda (hook)
+	  (add-hook hook function))
+	hooks))      
+
+(hook-to-modes 'linum-mode '(clojure-mode-hook web-mode-hook))
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; BACKUP/AUTOSAVE FILES
 					; (https://www.emacswiki.org/emacs/BackupDirectory)
@@ -52,12 +59,12 @@
       `((".*" . ,temporary-file-directory)))
 
 (setq auto-save-file-name-transforms
-  `((".*" ,temporary-file-directory t)))
+      `((".*" ,temporary-file-directory t)))
 
 (setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 		           		; INITIAL FRAME
@@ -82,9 +89,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-(add-hook 'clojurescript-mode-hook 'global-linum-mode)
-;; (global-linum-mode t) ;; line numbers
 
 (define-minor-mode git
   "Toggle Git minor mode."
