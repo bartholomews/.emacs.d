@@ -34,8 +34,20 @@
  '(custom-safe-themes
    (quote
     ("6383f86cac149fb10fc5a2bac6e0f7985d9af413c4be356cab4bfea3c08f3b42" default)))
+ 
  '(package-selected-packages (quote (org web-mode magit clojure-mode flatui-dark-theme)))
- '(send-mail-function (quote smtpmail-send-it)))
+
+ ;; On OS X, an Emacs instance started from the GUI will have a different environment
+ ;; than a shell in a terminal window, because OS X does not run a shell during login.
+ ;; This will lead to unexpected results when calling external utilities like make from Emacs.
+ ;; This library works around this problem by copying environment variables from the user's shell.
+ ;; https://github.com/purcell/exec-path-from-shell
+ (if (eq system-type 'darwin)
+     (when (not (package-installed-p 'exec-path-from-shell))
+     (package-install 'exec-path-from-shell)))
+ 
+ '(send-mail-function (quote smtpmail-send-it))) ;; todo
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -49,7 +61,7 @@
 	hooks))      
 
 (hook-to-modes 'linum-mode '(clojure-mode-hook web-mode-hook))
- 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; BACKUP/AUTOSAVE FILES
 					; (https://www.emacswiki.org/emacs/BackupDirectory)
@@ -68,19 +80,6 @@
       version-control t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		           		; INITIAL FRAME
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(when window-system (set-frame-parameter nil 'fullscreen 'fullboth))
-;; (when window-system (set-frame-size (selected-frame) 235 35))
-;; https://www.emacswiki.org/emacs/FrameSize
-
-;;(custom-set-variables
-;; '(initial-frame-alist (quote ((fullscreen . maximized)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-			         	; OTHER
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq visible-bell t) ;; https://www.emacswiki.org/emacs/AlarmBell
 (setq sgml-quick-keys 'indent) ;; HTML closing tags
@@ -91,6 +90,8 @@
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+			         	; OTHER
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able to load them.
@@ -108,12 +109,26 @@
 ;; Emacs knows where to look for the corresponding file.
 (add-to-list 'load-path "~/.emacs.d/customizations")
 
-(load "modes.el")
-;; (load "shell-integration.el")
-;; (load "editing.el")
-;; (load "elisp-editing.el")
-;; (load "misc.el")
-;; (load "navigation.el")
-;; (load "setup-clojure.el")
-;; (load "setup-js.el")
+(load "shell-integration.el")
+
 ;; (load "ui.el")
+;; (load "setup-js.el")
+;; (load "setup-clojure.el")
+;; (load "navigation.el")
+(load "modes.el")
+;; (load "misc.el")e
+;; (load "elisp-editing.el")
+;; (load "editing.el")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+		           		; INITIAL FRAME
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(when window-system (set-frame-parameter nil 'fullscreen 'fullboth))
+;; (when window-system (set-frame-size (selected-frame) 235 35))
+;; https://www.emacswiki.org/emacs/FrameSize
+
+;;(custom-set-variables
+;; '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
