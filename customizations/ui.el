@@ -53,7 +53,7 @@
       mouse-yank-at-point t)
 
 ;; No cursor blinking
-(blink-cursor-mode 0)
+;; (blink-cursor-mode 0)
 
 ;; full path in title bar
 (setq-default frame-title-format "%b (%f)")
