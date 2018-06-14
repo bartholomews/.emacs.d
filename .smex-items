@@ -1,0 +1,16 @@
+
+;; ----- smex-history -----
+(
+ elp-instrument-list
+ cd
+ 5x5
+ arp
+ dbx
+ dig
+ erc
+)
+
+;; ----- smex-data -----
+(
+ (elp-instrument-list . 1)
+)

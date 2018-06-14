@@ -10,6 +10,8 @@
   ;;(add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
   (add-to-list 'package-archives
 	       (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages/") t)
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
@@ -63,13 +65,35 @@
 
 (hook-to-modes 'linum-mode '(clojure-mode-hook web-mode-hook))
 
-(setq sgml-quick-keys 'indent) ;; HTML closing tags
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; MODES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; HTML
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-hook 'html-mode-hook 'subword-mode)
+(setq sgml-quick-keys 'indent) ;; HTML closing tags
+(eval-after-load "sgml-mode"
+  '(progn
+     (require 'tagedit)
+     (tagedit-add-paredit-like-keybindings)
+     (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))))
+
+;; JavaScript
+(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+(add-hook 'js-mode-hook 'subword-mode)
+(setq js-indent-level 2)
+
+;; CoffeeScript
+(add-to-list 'auto-mode-alist '("\\.coffee.erb$" . coffee-mode))
+(add-hook 'coffee-mode-hook 'subword-mode)
+(add-hook 'coffee-mode-hook 'highlight-indentation-current-column-mode)
+(add-hook 'coffee-mode-hook
+          (defun coffee-mode-newline-and-indent ()
+            (define-key coffee-mode-map "\C-j" 'coffee-newline-and-indent)
+            (setq coffee-cleanup-whitespace nil)))
+(custom-set-variables
+ '(coffee-tab-width 2))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			         	; OTHER
@@ -91,14 +115,11 @@
 (add-to-list 'load-path "~/.emacs.d/customizations")
 
 (load "shell-integration.el")
+(load "setup-clojure.el")
 (load "ui.el")
-;; (load "setup-js.el")
-;; (load "setup-clojure.el")
-;; (load "navigation.el")
+(load "navigation.el")
 (load "modes.el")
-;; (load "misc.el")e
-;; (load "elisp-editing.el")
-;; (load "editing.el")
+(load "editing.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 		           		; INITIAL FRAME

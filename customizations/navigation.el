@@ -12,6 +12,30 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
+;; Key binding to use "hippie expand" for text autocompletion
+;; http://www.emacswiki.org/emacs/HippieExpand
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+;; Lisp-friendly hippie expand
+(setq hippie-expand-try-functions-list
+      '(try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+
+;; eldoc-mode shows documentation in the minibuffer when writing code
+;; http://www.emacswiki.org/emacs/ElDoc
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
+;; Go straight to scratch buffer on startup
+;; (setq inhibit-startup-message t)
+
+;; Changes all yes/no questions to y/n type
+(fset 'yes-or-no-p 'y-or-n-p)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; IDO
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -33,7 +57,7 @@
 ;; Includes buffer names of recently open files, even if not open
 (setq ido-use-virtual-buffers t)
 ;; Enable ido in all contexts other than selecting buffer and file names
-(ido-ubiquitous-mode 1)
+;; (ido-ubiquitous-mode 1) ;; FIXME
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -81,5 +105,16 @@
       version-control t)       ; use versioned backups
 (setq auto-save-file-name-transforms
       `((".*" "~/.emacs-saves" t)))
+
+;; When you visit a file, point goes to the last place where it
+;; was when you previously visited the same file.
+;; http://www.emacswiki.org/emacs/SavePlace
+(require 'saveplace)
+(setq-default save-place t)
+;; keep track of saved places in ~/.emacs.d/places
+(setq save-place-file (concat user-emacs-directory "places"))
+
+;; No need for ~ files when editing
+(setq create-lockfiles nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
