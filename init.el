@@ -19,7 +19,6 @@
 					; PACKAGES/THEMES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,16 +36,7 @@
  
  '(package-selected-packages (quote (org web-mode magit clojure-mode flatui-dark-theme)))
 
- ;; On OS X, an Emacs instance started from the GUI will have a different environment
- ;; than a shell in a terminal window, because OS X does not run a shell during login.
- ;; This will lead to unexpected results when calling external utilities like make from Emacs.
- ;; This library works around this problem by copying environment variables from the user's shell.
- ;; https://github.com/purcell/exec-path-from-shell
- (if (eq system-type 'darwin)
-     (when (not (package-installed-p 'exec-path-from-shell))
-     (package-install 'exec-path-from-shell)))
- 
- '(send-mail-function (quote smtpmail-send-it))) ;; todo
+ )
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -55,12 +45,25 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; On OS X, an Emacs instance started from the GUI will have a different environment
+;; than a shell in a terminal window, because OS X does not run a shell during login.
+;; This will lead to unexpected results when calling external utilities like make from Emacs.
+;; This library works around this problem by copying environment variables from the user's shell.
+;; https://github.com/purcell/exec-path-from-shell
+(if (eq system-type 'darwin)
+    (when (not (package-installed-p 'exec-path-from-shell))
+      (package-install 'exec-path-from-shell)))
+
+'(send-mail-function (quote smtpmail-send-it))
+
 (defun hook-to-modes (function hooks)
   (mapc (lambda (hook)
 	  (add-hook hook function))
 	hooks))      
 
 (hook-to-modes 'linum-mode '(clojure-mode-hook web-mode-hook))
+
+(setq sgml-quick-keys 'indent) ;; HTML closing tags
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; BACKUP/AUTOSAVE FILES
@@ -78,11 +81,6 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(setq visible-bell t) ;; https://www.emacswiki.org/emacs/AlarmBell
-(setq sgml-quick-keys 'indent) ;; HTML closing tags
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 					; MODES
@@ -110,8 +108,7 @@
 (add-to-list 'load-path "~/.emacs.d/customizations")
 
 (load "shell-integration.el")
-
-;; (load "ui.el")
+(load "ui.el")
 ;; (load "setup-js.el")
 ;; (load "setup-clojure.el")
 ;; (load "navigation.el")
@@ -124,11 +121,6 @@
 		           		; INITIAL FRAME
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(when window-system (set-frame-parameter nil 'fullscreen 'fullboth))
-;; (when window-system (set-frame-size (selected-frame) 235 35))
 ;; https://www.emacswiki.org/emacs/FrameSize
-
-;;(custom-set-variables
-;; '(initial-frame-alist (quote ((fullscreen . maximized)))))
-
+(when window-system (set-frame-parameter nil 'fullscreen 'fullboth))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
