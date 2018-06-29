@@ -1,5 +1,6 @@
 elpa/exec-path-from-shell*
 .recentf
 .smex-items
+cider-history
 ido.last
 projectile-bookmarks.eld
