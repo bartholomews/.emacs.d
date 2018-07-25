@@ -70,6 +70,8 @@
 					; MODES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
+
 ;; HTML
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-hook 'html-mode-hook 'subword-mode)
